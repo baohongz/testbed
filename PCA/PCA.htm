@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<script src="./libs/jquery.min.js"></script>
+	<script src="./libs/babel-polyfill.min.js"></script>
+	<link href="./libs/shiny.css" rel="stylesheet">
+	<script src="./libs/shiny.js"></script>
+	<script src="./libs/htmlwidgets.js"></script>
+	<script src="./libs/datatables.js"></script>
+	<link href="./libs/selectize.bootstrap3.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+	<script src="shared/selectize/js/es5-shim.min.js"></script>
+	<![endif]-->
+	<script src="./libs/selectize.min.js"></script>
+	<link href="./libs/ion.rangeSlider.css" rel="stylesheet">
+	<link href="./libs/ion.rangeSlider.skinShiny.css" rel="stylesheet">
+	<script src="./libs/ion.rangeSlider.min.js"></script>
+	<script src="./libs/strftime-min.js"></script>
+	<link href="./libs/font-awesome.min.css" rel="stylesheet">
+	<script src="./libs/d3-color.v1.min.js"></script>
+	<script src="./libs/d3-array.v1.min.js"></script>
+	<script src="./libs/d3-collection.v1.min.js"></script>
+	<script src="./libs/d3-format.v1.min.js"></script>
+	<script src="./libs/d3-dispatch.v1.min.js"></script>
+	<script src="./libs/d3-ease.v1.min.js"></script>
+	<script src="./libs/d3-interpolate.v1.min.js"></script>
+	<script src="./libs/d3-selection.v1.min.js"></script>
+	<script src="./libs/d3-scale.v1.min.js"></script>
+	<script src="./libs/d3-timer.v1.min.js"></script>
+	<script src="./libs/d3-transition.v1.min.js"></script>
+	<script src="./libs/d3-drag.v1.min.js"></script>
+	<script src="./libs/d3-path.v1.min.js"></script>
+	<script src="./libs/d3-shape.v1.min.js"></script>
+	<script src="./libs/d3-axis.v1.min.js"></script>
+	<script src="./libs/d3-legend.min.js"></script>
+	<script src="./libs/d3-zoom-patched.min.js"></script>
+	<link href="./libs/lasso.css" rel="stylesheet">
+	<script src="./libs/lasso.js"></script>
+	<link href="./libs/scatterD3.css" rel="stylesheet">
+	<script src="./libs/scatterD3-utils.js"></script>
+	<script src="./libs/scatterD3-setup.js"></script>
+	<script src="./libs/scatterD3-axes.js"></script>
+	<script src="./libs/scatterD3-dots.js"></script>
+	<script src="./libs/scatterD3-arrows.js"></script>
+	<script src="./libs/scatterD3-labels.js"></script>
+	<script src="./libs/scatterD3-lines.js"></script>
+	<script src="./libs/scatterD3-ellipses.js"></script>
+	<script src="./libs/scatterD3-legend.js"></script>
+	<script src="./libs/scatterD3-lasso.js"></script>
+	<script src="./libs/scatterD3-exports.js"></script>
+	<script src="./libs/scatterD3.js"></script>
+	<link href="./libs/bootstrap.min.css" rel="stylesheet">
+	<script src="./libs/bootstrap.min.js"></script>
+	<script src="./libs/html5shiv.min.js"></script>
+	<script src="./libs/respond.min.js"></script>
+</head>
+
+<title>PCA</title>
+<style>
+	.well label, .well input, .well select, .well option, .well button, .well a, div.option, input, label, select, option, .selectize-input {
+		font-size: 11px !important;
+		height: auto !important;
+	}
+	.well .checkbox { margin-left: 5px !important; }
+	.well {padding: 5px !important;}
+	.well .btn { padding: 6px 10px; }
+	.dataTable th, .dataTable td {
+		font-size: 11px !important;
+		padding: 3px 5px !important; 
+	}
+	.dataTable th { padding-right: 18px !important }
+	.dataTables_wrapper {
+		max-width: 850px;
+		margin-bottom: 2em;
+	}
+	.dataTables_info, .dataTables_length, .dataTables_filter, .dataTables_paginate {
+		font-size: 11px !important;
+	}
+	#varplot, #indplot { height: 90vh !important}
+	#eigplot { max-width: 850px; }
+	.legend .label { font-weight: normal !important; font-size: 10px !important;}
+	.navbar-nav>li>a { font-size: 13px; padding: 15px 10px;}
+	#lasso-mod-content {
+		max-height: 700px;
+		overflow: auto;
+		padding: 10px;
+	}
+	
+	/* Syntax highlighting */
+	span.hl.str { color: #d14;}
+	span.hl.kwa { color: #099;}
+	span.hl.num { color: #099;}
+	span.hl.kwd { color: #333; font-weight: bold;}
+	span.hl.com { color: #888; font-style: italic;}
+</style>
+
+
+<body data-gr-c-s-loaded="true">
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+<div class="container-fluid">
+	<div class="navbar-header">
+		<span class="navbar-brand">PCA</span>
+	</div>
+</div>
+</nav>
+<div class="container-fluid">
+	<div class="tab-content">
+		<div class="tab-pane active" data-value="Variables plot" id="tab-4341-2">
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="well">
+						<div class="form-group shiny-input-container">
+							<label class="control-label" for="var_x">X axis</label>
+							<div>
+							<select id="var_x"><option value="1" selected>Axis 1 (32.72%)</option>
+							<option value="2">Axis 2 (17.37%)</option>
+							<option value="3">Axis 3 (14.05%)</option>
+							<option value="4">Axis 4 (10.57%)</option>
+							<option value="5">Axis 5 (6.85%)</option></select>
+							</div>
+						</div>
+						<div class="form-group shiny-input-container">
+							<label class="control-label" for="var_y">Y axis</label>
+							<div>
+							<select id="var_y"><option value="1">Axis 1 (32.72%)</option>
+							<option value="2" selected>Axis 2 (17.37%)</option>
+							<option value="3">Axis 3 (14.05%)</option>
+							<option value="4">Axis 4 (10.57%)</option>
+							<option value="5">Axis 5 (6.85%)</option></select>
+							</div>
+						</div>
+						<div class="form-group shiny-input-container">
+							<label class="control-label" for="var_lab_size">Labels size</label>
+							<input class="js-range-slider" id="var_lab_size" data-min="4" data-max="20" data-from="10" data-step="1" data-grid="true" data-grid-num="8" data-grid-snap="false" data-keyboard="true" data-keyboard-step="6.25" data-drag-interval="true" data-data-type="number" data-prettify-separator=","/>
+						</div>
+						<div class="form-group shiny-input-container">
+							<label for="var_lab_min_contrib">Minimum contribution to show label</label>
+							<input id="var_lab_min_contrib" type="number" class="form-control" value="0" min="0" max="97"/>
+						</div>
+						<div class="form-group shiny-input-container">
+							<label class="control-label" for="var_col">Points color :</label>
+							<div>
+							<select id="var_col"><option value="None">None</option>
+							<option value="Type" selected>Variable type</option></select>
+							</div>
+						</div>
+						<div class="form-group shiny-input-container">
+							<div class="checkbox">
+							<label>
+							<input id="var_sup" type="checkbox" checked="checked"/>
+							<span>Supplementary variables</span>
+							</label>
+							</div>
+						</div>
+						<p>
+								<a id="explor-var-svg-export" class="btn btn-default"><i class="fa fa-file-image-o"></i> Export as SVG</a>
+						</p>
+					</div>
+				</div>
+				<div class="col-sm-10">
+					<div id="htmlwidget_1" class="scatterD3 html-widget html-widget-output"></div>
+				</div>	
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	var widgets = HTMLWidgets.widgets;
+	var jed = widgets.filter(function(widget){
+		return widget.name == "scatterD3"
+	})[0];
+
+
+	var el = document.getElementById('htmlwidget_1');
+	var instance = jed.initialize(el, 800, 800);
+
+//console.log(HTMLWidgets);
+//console.log(instance);
+
+	var x =
+{"data":{"x":[-0.693,0.778,-0.513,0.627,-0.505,0.911,-0.918,0.332,-0.825,0.35,-0.507,0.923,-0.45,0.694,-0.319,0.473,0.22,-0.169,-0,0.334,-0.496,0.874,-0.029,0.252,0.62,-0.617,-0.036,-0.026,-0.12,-0.536],"y":[0.217,-0.243,0.462,-0.565,-0.249,0.448,0.387,-0.14,-0.368,0.156,-0.118,0.215,0.179,-0.276,-0.523,0.777,0.303,0.107,0.156,-0.391,0.44,0.103,-0.005,0.043,0.163,-0.001,0.097,-0.209,0.095,-0.012],"lab":["Cinema_0","Cinema_1","Computer_0","Computer_1","Exhibition_0","Exhibition_1","Listening music_0","Listening music_1","Reading_0","Reading_1","Show_0","Show_1","Sport_0","Sport_1","Walking_0","Walking_1","Divorcee","Married","Remarried","Single","Widower","nb.activitees","Employee","Foreman","Management","Manual labourer","Other","Profession.NA","Technician","Unskilled worker"],"col_var":["Cinema","Cinema","Computer","Computer","Exhibition","Exhibition","Listening music","Listening music","Reading","Reading","Show","Show","Sport","Sport","Walking","Walking","Marital status","Marital status","Marital status","Marital status","Marital status","nb.activitees","Profession","Profession","Profession","Profession","Profession","Profession","Profession","Profession"],"symbol_var":["Active","Active","Active","Active","Active","Active","Active","Active","Active","Active","Active","Active","Active","Active","Active","Active","Supplementary","Supplementary","Supplementary","Supplementary","Supplementary","Supplementary","Supplementary","Supplementary","Supplementary","Supplementary","Supplementary","Supplementary","Supplementary","Supplementary"],"type_var":["point","point","point","point","point","point","point","point","point","point","point","point","point","point","point","point","point","point","point","point","point","arrow","point","point","point","point","point","point","point","point"],"key_var":["Cinema-Cinema_0","Cinema-Cinema_1","Computer-Computer_0","Computer-Computer_1","Exhibition-Exhibition_0","Exhibition-Exhibition_1","Listening music-Listening music_0","Listening music-Listening music_1","Reading-Reading_0","Reading-Reading_1","Show-Show_0","Show-Show_1","Sport-Sport_0","Sport-Sport_1","Walking-Walking_0","Walking-Walking_1","Marital status-Divorcee","Marital status-Married","Marital status-Remarried","Marital status-Single","Marital status-Widower","nb.activitees-nb.activitees","Profession-Employee","Profession-Foreman","Profession-Management","Profession-Manual labourer","Profession-Other","Profession-Profession.NA","Profession-Technician","Profession-Unskilled worker"],"tooltip_text":["Cinema_0<br> Variable: Cinema<br> Axis 1 : -0.693<br> Axis 2 : 0.217<br> Squared cosinus: 0.593<br> Contribution: 11.375<br> Count: 476","Cinema_1<br> Variable: Cinema<br> Axis 1 : 0.778<br> Axis 2 : -0.243<br> Squared cosinus: 0.593<br> Contribution: 12.77<br> Count: 424","Computer_0<br> Variable: Computer<br> Axis 1 : -0.513<br> Axis 2 : 0.462<br> Squared cosinus: 0.583<br> Contribution: 16.646<br> Count: 495","Computer_1<br> Variable: Computer<br> Axis 1 : 0.627<br> Axis 2 : -0.565<br> Squared cosinus: 0.583<br> Contribution: 20.345<br> Count: 405","Exhibition_0<br> Variable: Exhibition<br> Axis 1 : -0.505<br> Axis 2 : -0.249<br> Squared cosinus: 0.571<br> Contribution: 9.669<br> Count: 579","Exhibition_1<br> Variable: Exhibition<br> Axis 1 : 0.911<br> Axis 2 : 0.448<br> Squared cosinus: 0.571<br> Contribution: 17.441<br> Count: 321","Listening music_0<br> Variable: Listening music<br> Axis 1 : -0.918<br> Axis 2 : 0.387<br> Squared cosinus: 0.359<br> Contribution: 11.772<br> Count: 239","Listening music_1<br> Variable: Listening music<br> Axis 1 : 0.332<br> Axis 2 : -0.14<br> Squared cosinus: 0.359<br> Contribution: 4.257<br> Count: 661","Reading_0<br> Variable: Reading<br> Axis 1 : -0.825<br> Axis 2 : -0.368<br> Squared cosinus: 0.345<br> Contribution: 11.081<br> Count: 268","Reading_1<br> Variable: Reading<br> Axis 1 : 0.35<br> Axis 2 : 0.156<br> Squared cosinus: 0.345<br> Contribution: 4.699<br> Count: 632","Show_0<br> Variable: Show<br> Axis 1 : -0.507<br> Axis 2 : -0.118<br> Squared cosinus: 0.493<br> Contribution: 6.705<br> Count: 581","Show_1<br> Variable: Show<br> Axis 1 : 0.923<br> Axis 2 : 0.215<br> Squared cosinus: 0.493<br> Contribution: 12.211<br> Count: 319","Sport_0<br> Variable: Sport<br> Axis 1 : -0.45<br> Axis 2 : 0.179<br> Squared cosinus: 0.362<br> Contribution: 6.224<br> Count: 546","Sport_1<br> Variable: Sport<br> Axis 1 : 0.694<br> Axis 2 : -0.276<br> Squared cosinus: 0.362<br> Contribution: 9.6<br> Count: 354","Walking_0<br> Variable: Walking<br> Axis 1 : -0.319<br> Axis 2 : -0.523<br> Squared cosinus: 0.557<br> Contribution: 18.183<br> Count: 538","Walking_1<br> Variable: Walking<br> Axis 1 : 0.473<br> Axis 2 : 0.777<br> Squared cosinus: 0.557<br> Contribution: 27.022<br> Count: 362","Divorcee<br> Variable: Marital status<br> Axis 1 : 0.22<br> Axis 2 : 0.303<br> Squared cosinus: 0.012<br>  Count: 74","Married<br> Variable: Marital status<br> Axis 1 : -0.169<br> Axis 2 : 0.107<br> Squared cosinus: 0.04<br>  Count: 451","Remarried<br> Variable: Marital status<br> Axis 1 : 0<br> Axis 2 : 0.156<br> Squared cosinus: 0.001<br>  Count: 51","Single<br> Variable: Marital status<br> Axis 1 : 0.334<br> Axis 2 : -0.391<br> Squared cosinus: 0.111<br>  Count: 266","Widower<br> Variable: Marital status<br> Axis 1 : -0.496<br> Axis 2 : 0.44<br> Squared cosinus: 0.03<br>  Count: 58","nb.activitees<br> Variable: nb.activitees<br> Axis 1 : 0.874<br> Axis 2 : 0.103<br>   ","Employee<br> Variable: Profession<br> Axis 1 : -0.029<br> Axis 2 : -0.005<br> Squared cosinus: 0<br>  Count: 273","Foreman<br> Variable: Profession<br> Axis 1 : 0.252<br> Axis 2 : 0.043<br> Squared cosinus: 0.006<br>  Count: 81","Management<br> Variable: Profession<br> Axis 1 : 0.62<br> Axis 2 : 0.163<br> Squared cosinus: 0.092<br>  Count: 164","Manual labourer<br> Variable: Profession<br> Axis 1 : -0.617<br> Axis 2 : -0.001<br> Squared cosinus: 0.06<br>  Count: 122","Other<br> Variable: Profession<br> Axis 1 : -0.036<br> Axis 2 : 0.097<br> Squared cosinus: 0<br>  Count: 15","Profession.NA<br> Variable: Profession<br> Axis 1 : -0.026<br> Axis 2 : -0.209<br> Squared cosinus: 0.009<br>  Count: 156","Technician<br> Variable: Profession<br> Axis 1 : -0.12<br> Axis 2 : 0.095<br> Squared cosinus: 0.001<br>  Count: 32","Unskilled worker<br> Variable: Profession<br> Axis 1 : -0.536<br> Axis 2 : -0.012<br> Squared cosinus: 0.019<br>  Count: 57"]},"settings":{"x_log":false,"y_log":false,"labels_size":8,"labels_positions":null,"point_size":56,"point_opacity":1,"hover_size":1,"hover_opacity":null,"xlab":"Axis 1 (35.57%)","ylab":"Axis 2 (12.72%)","has_labels":true,"col_lab":"None","col_continuous":false,"colors":null,"ellipses":false,"ellipses_data":[],"symbol_lab":"Type","size_range":[10,300],"size_lab":"if (is.null(size_var)) NULL else var_data[, size_var]","opacity_lab":"NULL","unit_circle":true,"has_color_var":true,"has_symbol_var":true,"has_size_var":false,"has_opacity_var":false,"has_url_var":false,"has_legend":true,"has_tooltips":true,"tooltip_text":["Cinema_0<br> Variable: Cinema<br> Axis 1 : -0.693<br> Axis 2 : 0.217<br> Squared cosinus: 0.593<br> Contribution: 11.375<br> Count: 476","Cinema_1<br> Variable: Cinema<br> Axis 1 : 0.778<br> Axis 2 : -0.243<br> Squared cosinus: 0.593<br> Contribution: 12.77<br> Count: 424","Computer_0<br> Variable: Computer<br> Axis 1 : -0.513<br> Axis 2 : 0.462<br> Squared cosinus: 0.583<br> Contribution: 16.646<br> Count: 495","Computer_1<br> Variable: Computer<br> Axis 1 : 0.627<br> Axis 2 : -0.565<br> Squared cosinus: 0.583<br> Contribution: 20.345<br> Count: 405","Exhibition_0<br> Variable: Exhibition<br> Axis 1 : -0.505<br> Axis 2 : -0.249<br> Squared cosinus: 0.571<br> Contribution: 9.669<br> Count: 579","Exhibition_1<br> Variable: Exhibition<br> Axis 1 : 0.911<br> Axis 2 : 0.448<br> Squared cosinus: 0.571<br> Contribution: 17.441<br> Count: 321","Listening music_0<br> Variable: Listening music<br> Axis 1 : -0.918<br> Axis 2 : 0.387<br> Squared cosinus: 0.359<br> Contribution: 11.772<br> Count: 239","Listening music_1<br> Variable: Listening music<br> Axis 1 : 0.332<br> Axis 2 : -0.14<br> Squared cosinus: 0.359<br> Contribution: 4.257<br> Count: 661","Reading_0<br> Variable: Reading<br> Axis 1 : -0.825<br> Axis 2 : -0.368<br> Squared cosinus: 0.345<br> Contribution: 11.081<br> Count: 268","Reading_1<br> Variable: Reading<br> Axis 1 : 0.35<br> Axis 2 : 0.156<br> Squared cosinus: 0.345<br> Contribution: 4.699<br> Count: 632","Show_0<br> Variable: Show<br> Axis 1 : -0.507<br> Axis 2 : -0.118<br> Squared cosinus: 0.493<br> Contribution: 6.705<br> Count: 581","Show_1<br> Variable: Show<br> Axis 1 : 0.923<br> Axis 2 : 0.215<br> Squared cosinus: 0.493<br> Contribution: 12.211<br> Count: 319","Sport_0<br> Variable: Sport<br> Axis 1 : -0.45<br> Axis 2 : 0.179<br> Squared cosinus: 0.362<br> Contribution: 6.224<br> Count: 546","Sport_1<br> Variable: Sport<br> Axis 1 : 0.694<br> Axis 2 : -0.276<br> Squared cosinus: 0.362<br> Contribution: 9.6<br> Count: 354","Walking_0<br> Variable: Walking<br> Axis 1 : -0.319<br> Axis 2 : -0.523<br> Squared cosinus: 0.557<br> Contribution: 18.183<br> Count: 538","Walking_1<br> Variable: Walking<br> Axis 1 : 0.473<br> Axis 2 : 0.777<br> Squared cosinus: 0.557<br> Contribution: 27.022<br> Count: 362","Divorcee<br> Variable: Marital status<br> Axis 1 : 0.22<br> Axis 2 : 0.303<br> Squared cosinus: 0.012<br>  Count: 74","Married<br> Variable: Marital status<br> Axis 1 : -0.169<br> Axis 2 : 0.107<br> Squared cosinus: 0.04<br>  Count: 451","Remarried<br> Variable: Marital status<br> Axis 1 : 0<br> Axis 2 : 0.156<br> Squared cosinus: 0.001<br>  Count: 51","Single<br> Variable: Marital status<br> Axis 1 : 0.334<br> Axis 2 : -0.391<br> Squared cosinus: 0.111<br>  Count: 266","Widower<br> Variable: Marital status<br> Axis 1 : -0.496<br> Axis 2 : 0.44<br> Squared cosinus: 0.03<br>  Count: 58","nb.activitees<br> Variable: nb.activitees<br> Axis 1 : 0.874<br> Axis 2 : 0.103<br>   ","Employee<br> Variable: Profession<br> Axis 1 : -0.029<br> Axis 2 : -0.005<br> Squared cosinus: 0<br>  Count: 273","Foreman<br> Variable: Profession<br> Axis 1 : 0.252<br> Axis 2 : 0.043<br> Squared cosinus: 0.006<br>  Count: 81","Management<br> Variable: Profession<br> Axis 1 : 0.62<br> Axis 2 : 0.163<br> Squared cosinus: 0.092<br>  Count: 164","Manual labourer<br> Variable: Profession<br> Axis 1 : -0.617<br> Axis 2 : -0.001<br> Squared cosinus: 0.06<br>  Count: 122","Other<br> Variable: Profession<br> Axis 1 : -0.036<br> Axis 2 : 0.097<br> Squared cosinus: 0<br>  Count: 15","Profession.NA<br> Variable: Profession<br> Axis 1 : -0.026<br> Axis 2 : -0.209<br> Squared cosinus: 0.009<br>  Count: 156","Technician<br> Variable: Profession<br> Axis 1 : -0.12<br> Axis 2 : 0.095<br> Squared cosinus: 0.001<br>  Count: 32","Unskilled worker<br> Variable: Profession<br> Axis 1 : -0.536<br> Axis 2 : -0.012<br> Squared cosinus: 0.019<br>  Count: 57"],"has_custom_tooltips":true,"click_callback":null,"zoom_callback":null,"fixed":true,"legend_width":150,"left_margin":30,"html_id":"scatterD3-GDJEWNQC","xlim":[-1.29,1.29],"ylim":[-1.18,1.39],"x_categorical":false,"y_categorical":false,"menu":true,"lasso":false,"lasso_callback":null,"dom_id_reset_zoom":"scatterD3-reset-zoom","dom_id_svg_export":null,"dom_id_lasso_toggle":null,"transitions":true,"axes_font_size":"100%","legend_font_size":"100%","caption":null,"lines":{"slope":[0,null],"intercept":[0,0],"stroke_dasharray":[5,5]},"hashes":[]}};
+
+
+
+
+	instance.renderValue(x);
+
+
+//	instance.resize(800,800);
+
+
+	$(document).on('shiny:inputchanged', function(event) {
+console.log(event.name);
+console.log(event.value);
+console.log(instance.s.settings());
+
+		var myset;
+		
+		switch(event.name) {
+			case "var_lab_size":
+				
+				myset = instance.s.settings();
+				myset.labels_size = event.value;
+				myset.transitions = false;
+				instance.s.settings(myset);
+				instance.renderValue(x);
+				myset.transitions = true;
+			break;
+			case "var_col":
+				
+				myset = instance.s.settings();
+				myset.col_lab = event.value;
+				myset.transitions = false;
+				instance.s.settings(myset);
+console.log(instance.s.settings());
+				instance.renderValue(x);
+				myset.transitions = true;
+			break;
+		}
+	});
+
+</script>
+</body>
+</html>
